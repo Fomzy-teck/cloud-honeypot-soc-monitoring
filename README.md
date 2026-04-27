@@ -30,3 +30,11 @@ Conducted basic threat hunting
 Blocked malicious IPs using NSG
 
 Full Project Report
+https://github.com/Fomzy-teck/cloud-honeypot-soc-monitoring/blob/main/Cloud-Based%20Honeypot%20Deployment%20and%20SOC%20Threat%20Monitoring%20Using%20Microsoft%20Sentinel.pdf
+
+Key Skills Demonstrated
+
+Detection Engineering
+Incident Investigation
+Threat Hunting
+Incident Response

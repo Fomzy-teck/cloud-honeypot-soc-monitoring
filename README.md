@@ -1,40 +1,43 @@
-Cloud-Based Honeypot SOC Monitoring Project
+# 🛡️ Azure-Cloud Cloud-Based Honeypot & Live SOC Monitoring Lab
 
-Overview
+[![Azure](https://img.shields.io/badge/Azure-0089D6?style=flat&logo=microsoft-azure&logoColor=white)](https://azure.microsoft.com/)
+[![Microsoft Sentinel](https://img.shields.io/badge/Microsoft%20Sentinel-0078D4?style=flat&logo=microsoft&logoColor=white)](https://azure.microsoft.com/en-us/products/microsoft-sentinel)
+[![KQL](https://img.shields.io/badge/Query%20Language-KQL-blue)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/)
+[![MITRE ATT&CK](https://img.shields.io/badge/Framework-MITRE%20ATT%26CK-red)](https://attack.mitre.org/)
 
-This project simulates a real-world Security Operations Center (SOC) by deploying a cloud-based honeypot using Microsoft Azure and Microsoft Sentinel.
+A practical, hands-on implementation of an enterprise-grade cloud Security Operations Center (SOC) lifecycle. This lab features a intentionally misconfigured, high-exposure Windows endpoint acting as a honey-token asset to capture malicious automated footprinting and exploit traffic across the open internet.
 
-The goal was to attract real attackers, monitor their behavior, and perform detection, investigation, and response activities.
+---
 
-Technologies Used
+## 🎯 Core Project Focus
+* **Threat Surface Exploitation:** Simulating perimeter exposures on Windows RDP (`Port 3389`).
+* **SIEM Log Ingestion Engineering:** Parsing centralized raw pipeline `SecurityEvent` parameters using Azure Log Analytics.
+* **Detection Engineering (KQL):** Architecting behavioral analytical criteria to isolate high-confidence brute-force alerts.
+* **Threat Intelligence & SOAR Playbooks:** Enriched alert contexts using VirusTotal feeds and malicious geo-IP watchlists.
+* **Active Defense Remediation:** Executing immediate incident isolation steps through Cloud Network Security Groups (NSG).
 
-Microsoft Azure
-Microsoft Sentinel
-Log Analytics Workspace
-Kusto Query Language (KQL)
-VirusTotal
+---
 
-Key Findings
+## 📊 Lab Telemetry & High-Impact Metrics
+Over a continuous **two-week monitoring window**, the environment captured aggressive automated intrusion frameworks:
 
-Over 14,000+ brute-force login attempts from a single attacker
-Attacks originated from multiple countries
-RDP (Port 3389) was heavily targeted
-Attack activity began shortly after exposure
+| Metric Pillar | Operational Data Field |
+| :--- | :--- |
+| **Monitored Asset** | `CORP-CLIENT-DATABASE-EAST-1` (Windows Server OS) |
+| **Deployment Region** | Azure East US |
+| **Total Triaged Incidents** | **12 Critical Vector Alerts** |
+| **Peak Assault Volume** | **14,738 brute-force password attempts** from a single node |
+| **Top Adversary Origin** | China (Huawei Cloud Autonomous Routing Space) |
+| **Target Vectors** | Default systemic names (`admin`, `guest`, `user`) |
 
-What I Did
+---
 
-Built detection rules using KQL
-Investigated security incidents
-Performed threat intelligence enrichment
-Conducted basic threat hunting
-Blocked malicious IPs using NSG
+## ⚡ Detection Engineering: KQL Playbook
+The core of the detection architecture relies on optimized **Kusto Query Language (KQL)** analytics rules configured to surface high-priority credential access techniques:
 
-Full Project Report
-https://github.com/Fomzy-teck/cloud-honeypot-soc-monitoring/blob/main/Cloud-Based%20Honeypot%20Deployment%20and%20SOC%20Threat%20Monitoring%20Using%20Microsoft%20Sentinel.pdf
-
-Key Skills Demonstrated
-
-Detection Engineering
-Incident Investigation
-Threat Hunting
-Incident Response
+### Rule 1: High-Velocity Brute Force Detection
+```kql
+SecurityEvent
+| where EventID == 4625
+| summarize FailedAttempts = count() by IpAddress, Account, TimeGenerated
+| where FailedAttempts > 7
